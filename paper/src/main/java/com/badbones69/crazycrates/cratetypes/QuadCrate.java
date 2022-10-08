@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
@@ -69,7 +70,7 @@ public class QuadCrate implements Listener {
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
                         crazyManager.givePrize(player, prize);
 
-                        ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
+                        ItemBuilder itemBuilder = ItemBuilder.convertItemStack(PlaceholderAPISupport.buildItemWithPlaceholders(player, prize));
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
 
                         ItemStack item = itemBuilder.build();
@@ -81,7 +82,7 @@ public class QuadCrate implements Listener {
                         reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
                         reward.setVelocity(new Vector(0, .2, 0));
 
-                        reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
+                        reward.setCustomName(PlaceholderAPISupport.buildItemWithPlaceholders(player, prize).getItemMeta().getDisplayName());
                         reward.setCustomNameVisible(true);
                         reward.setPickupDelay(Integer.MAX_VALUE);
 

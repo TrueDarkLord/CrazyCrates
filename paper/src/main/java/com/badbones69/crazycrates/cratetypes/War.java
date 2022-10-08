@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -84,7 +85,7 @@ public class War implements Listener {
     private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
         if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
             for (int i = 0; i < 9; i++) {
-                inv.setItem(i, crate.pickPrize(player).getDisplayItem());
+                inv.setItem(i, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
             }
         }
     }
@@ -141,7 +142,7 @@ public class War implements Listener {
                 if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
                     final int slot = e.getRawSlot();
                     Prize prize = crate.pickPrize(player);
-                    inv.setItem(slot, prize.getDisplayItem());
+                    inv.setItem(slot, PlaceholderAPISupport.buildItemWithPlaceholders(player, prize));
 
                     if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
 
@@ -161,7 +162,7 @@ public class War implements Listener {
                         public void run() {
 
                             for (int i = 0; i < 9; i++) {
-                                if (i != slot) inv.setItem(i, crate.pickPrize(player).getDisplayItem());
+                                if (i != slot) inv.setItem(i, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
                             }
 
                             if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);

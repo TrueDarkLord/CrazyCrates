@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -33,7 +34,7 @@ public class Roulette implements Listener {
     public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
-        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+        inv.setItem(13, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
         player.openInventory(inv);
 
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -55,14 +56,14 @@ public class Roulette implements Listener {
             @Override
             public void run() {
                 if (full <= 15) {
-                    inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+                    inv.setItem(13, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
                     setGlass(inv);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     even++;
 
                     if (even >= 4) {
                         even = 0;
-                        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+                        inv.setItem(13, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
                     }
                 }
 
@@ -79,7 +80,7 @@ public class Roulette implements Listener {
 
                     if (Methods.slowSpin().contains(time)) {
                         setGlass(inv);
-                        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+                        inv.setItem(13, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     }
 

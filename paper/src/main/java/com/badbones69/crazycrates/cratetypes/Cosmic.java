@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -127,7 +128,7 @@ public class Cosmic implements Listener {
                                 if (prize != null) {
                                     crazyManager.givePrize(player, prize);
                                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
-                                    e.setCurrentItem(prize.getDisplayItem());
+                                    e.setCurrentItem(PlaceholderAPISupport.buildItemWithPlaceholders(player, prize));
                                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
                                     if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));

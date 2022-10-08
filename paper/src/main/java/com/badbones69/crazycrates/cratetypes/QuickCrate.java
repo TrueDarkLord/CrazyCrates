@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
@@ -80,7 +81,7 @@ public class QuickCrate implements Listener {
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
             crazyManager.givePrize(player, prize);
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-            ItemStack displayItem = prize.getDisplayItem();
+            ItemStack displayItem = PlaceholderAPISupport.buildItemWithPlaceholders(player, prize);
             NBTItem nbtItem = new NBTItem(displayItem);
             nbtItem.setBoolean("crazycrates-item", true);
             displayItem = nbtItem.getItem();

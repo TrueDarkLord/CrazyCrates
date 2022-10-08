@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -42,8 +43,8 @@ public class Wheel implements Listener {
 
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
-            inv.setItem(i, prize.getDisplayItem());
-            items.put(i, prize.getDisplayItem());
+            inv.setItem(i, PlaceholderAPISupport.buildItemWithPlaceholders(player, prize));
+            items.put(i, PlaceholderAPISupport.buildItemWithPlaceholders(player, prize));
         }
 
         rewards.put(player, items);

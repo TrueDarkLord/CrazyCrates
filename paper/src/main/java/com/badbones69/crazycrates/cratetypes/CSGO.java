@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -69,7 +70,7 @@ public class CSGO implements Listener {
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
-            inv.setItem(i, crate.pickPrize(player).getDisplayItem());
+            inv.setItem(i, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
         }
 
         player.openInventory(inv);
@@ -161,7 +162,7 @@ public class CSGO implements Listener {
             items.add(inv.getItem(i));
         }
 
-        inv.setItem(9, crate.pickPrize(player).getDisplayItem());
+        inv.setItem(9, PlaceholderAPISupport.buildItemWithPlaceholders(player, crate.pickPrize(player)));
 
         for (int i = 0; i < 8; i++) {
             inv.setItem(i + 10, items.get(i));
