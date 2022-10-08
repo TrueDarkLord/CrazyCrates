@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -333,6 +334,7 @@ public class Crate {
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
+            item = PlaceholderAPISupport.reBuildItemWithPlaceholders(player, item);
             int nextSlot = inventory.firstEmpty();
 
             if (nextSlot >= 0) {

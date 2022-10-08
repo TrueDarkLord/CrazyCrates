@@ -85,6 +85,26 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         return item;
     }
+    public static ItemStack reBuildItemWithPlaceholders(Player player, ItemStack item) {
+
+        if (!PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) return item;
+
+
+        List<String> newLore = new ArrayList<>();
+        ItemMeta newMeta = item.getItemMeta();
+
+        newMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getItemMeta().getDisplayName()));
+
+        if (item.getItemMeta().hasLore()) {
+            for (String s : item.getLore()) {
+                newLore.add(PlaceholderAPI.setPlaceholders(player, s));
+            }
+        }
+        newMeta.setLore(newLore);
+        item.setItemMeta(newMeta);
+
+        return item;
+    }
 
 
 }
