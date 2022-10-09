@@ -349,6 +349,9 @@ public class CrazyManager {
             case MENU:
                 MenuListener.openGUI(player);
                 break;
+            case SNAKE:
+                Snake.openSnake(player, crate, keyType, checkHand);
+                break;
             case COSMIC:
                 Cosmic.openCosmic(player, crate, keyType, checkHand);
                 break;
