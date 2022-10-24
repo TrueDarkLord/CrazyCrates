@@ -8,14 +8,19 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
@@ -64,48 +69,50 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         return plugin.getDescription().getVersion();
     }
 
+
     public static ItemStack buildItemWithPlaceholders(Player player, Prize prize) {
 
         ItemStack item = prize.getDisplayItem();
-        if (!PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) return item;
 
-
-        List<String> newLore = new ArrayList<>();
-        ItemMeta newMeta = item.getItemMeta();
-
-        newMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getItemMeta().getDisplayName()));
-
-        if (item.getItemMeta().hasLore()) {
-            for (String s : item.getLore()) {
-                newLore.add(PlaceholderAPI.setPlaceholders(player, s));
-            }
-        }
-        newMeta.setLore(newLore);
-        item.setItemMeta(newMeta);
-
-        return item;
+        return reBuildItemWithPlaceholders(player, item);
     }
     public static ItemStack reBuildItemWithPlaceholders(Player player, ItemStack item) {
 
         if (!PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) return item;
 
-
         List<String> newLore = new ArrayList<>();
-        ItemMeta newMeta = item.getItemMeta();
 
-        newMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getItemMeta().getDisplayName()));
+        if (!item.getType().equals(Material.PLAYER_HEAD)) {
+            ItemMeta newMeta = item.getItemMeta();
 
-        if (item.getItemMeta().hasLore()) {
-            for (String s : item.getLore()) {
-                newLore.add(PlaceholderAPI.setPlaceholders(player, s));
+            newMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getItemMeta().getDisplayName()));
+
+            if (item.getItemMeta().hasLore()) {
+                for (String s : item.getLore()) {
+                    newLore.add(PlaceholderAPI.setPlaceholders(player, s));
+                }
             }
-        }
-        newMeta.setLore(newLore);
-        item.setItemMeta(newMeta);
+            newMeta.setLore(newLore);
+            item.setItemMeta(newMeta);
 
+        } else {
+            SkullMeta newMeta = (SkullMeta) item.getItemMeta();
+
+            newMeta.setDisplayName(PlaceholderAPI.setPlaceholders(player, item.getItemMeta().getDisplayName()));
+            if((((SkullMeta) item.getItemMeta()).hasOwner())) {
+                newMeta.setOwner(PlaceholderAPI.setPlaceholders(player, ((SkullMeta) item.getItemMeta()).getOwner()));
+            }
+
+            if (item.getItemMeta().hasLore()) {
+                for (String s : item.getLore()) {
+                    newLore.add(PlaceholderAPI.setPlaceholders(player, s));
+                }
+            }
+            newMeta.setLore(newLore);
+            item.setItemMeta(newMeta);
+        }
         return item;
     }
-
 
 }
 
