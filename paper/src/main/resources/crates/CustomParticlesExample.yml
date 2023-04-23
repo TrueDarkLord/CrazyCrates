@@ -4,20 +4,22 @@ Crate:
   Preview-Name: '&6Particle Crate Preview'
   StartingKeys: 0
   Max-Mass-Open: 10
-  #Custom particles for the crate opening animation.
+  # Custom particles for the crate opening animation.
   Particles:
-    #Particle Number
+    # Particle Number
     1:
-      #Pick the animation style.
-      #Current options are Spiral_Clockwise, Spiral_Counterclockwise, Spiral_Up and Circle:<height>. Animation defaults to Line_Up.
-      Animation: 'Spiral_Clockwise'
-      #Pick the particle to be used for the animation. https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+      # Pick the animation style.
+      # Current options are Spiral[modifiers], Helix:[modifiers] and Circle:[height]. Animation defaults to Line_Up.
+      # Modifiers for helix are down, left and amplitude=# which has to be the final argument to work.
+      # Modifiers for Spiral are Clockwise.
+      Animation: 'Helix'
+      # Pick the particle to be used for the animation. https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
       Particle: 'FLAME'
-      #If particle is set to REDSTONE, then you can use the colour section below to pick a colour for the particles.
-      #Only accepts Hex Code for colours.
+      # If particle is set to REDSTONE, then you can use the colour section below to pick a colour for the particles.
+      # Only accepts Hex Code for colours.
       Color: 0xFF0000
     2:
-      Animation: 'Line_Up'
+      Animation: 'Spiral'
       Particle: 'REDSTONE'
       Color: 0xFFD700
   InGUI: false

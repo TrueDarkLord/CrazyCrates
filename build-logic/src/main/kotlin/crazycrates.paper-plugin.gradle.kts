@@ -37,7 +37,7 @@ dependencies {
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
 
     compileOnly("com.Zrips.CMI", "CMI-API", "9.2.6.1")
-    compileOnly("net.Zrips.CMILib", "CMI-Lib", "1.2.4.1")
+    compileOnly("net.Zrips.CMILib", "CMI-Lib", "1.2.5.1")
 
     compileOnly("me.clip", "placeholderapi", "2.11.2") {
         exclude(group = "org.spigotmc", module = "spigot")

@@ -39,16 +39,16 @@ public class Particles {
                     String animation = PA.getAnimation().toLowerCase().contains(":") ? PA.getAnimation().toLowerCase().split(":")[0] : PA.getAnimation().toLowerCase();
 
                     switch (animation) {
-                        case "spiral_clockwise" ->
-                                spiralClockwise(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
-                        case "spiral_counterclockwise" ->
-                                spiralCounterClockwise(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
-                        case "spiral_up" ->
-                                spiralUp(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
+                        case "spiral" ->
+                                spiral(PA, loc, tickTillPrize);
+                        case "helix" ->
+                                helix(PA, loc, tickTillPrize);
                         case "circle" ->
-                                circle(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize, PA.getAnimation());
+                                circle(PA, loc, tickTillPrize, PA.getAnimation());
+                        case "tf" ->
+                                twirlyBullshit(PA, loc, tickTillPrize, PA.getAnimation());
                         default ->
-                                lineUp(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
+                                lineUp(PA, loc, tickTillPrize);
                     }
                 }
 
@@ -69,7 +69,25 @@ public class Particles {
         }
     }
 
-    private static void circle(Particle particle, Color color, Location loc, int tickTillPrize, String PAAnimation) {
+    private static void twirlyBullshit(ParticleAnimation PA, Location loc, int tickTillPrize, String PAAnimation) {
+        double y;
+        double off = 0; //YOffSet
+        try {
+            y = Double.parseDouble(PAAnimation.split(":")[1]);
+        } catch (Exception e) {
+            y = 0.0;
+        }
+
+        for (int i=0; i < 20; i++) {
+            circle(PA, loc.add(0, -off, 0), tickTillPrize, PAAnimation);
+            off -= 0.1;
+        }
+    }
+
+    private static void circle(ParticleAnimation PA, Location loc, int tickTillPrize, String PAAnimation, Double height) {
+
+        Particle particle = Particle.valueOf(PA.getParticle());
+        Color color = Color.fromRGB(PA.getColor());
 
         double angle = tickTillPrize * 6.0;
 
@@ -88,34 +106,67 @@ public class Particles {
         spawnParticles(particle, color, location);
 
     }
-    private static void spiralUp(Particle particle, Color color, Location loc, int tickTillPrize) {
+    private static void circle(ParticleAnimation PA, Location loc, int tickTillPrize, String PAAnimation) {
+
+        Particle particle = Particle.valueOf(PA.getParticle());
+        Color color = Color.fromRGB(PA.getColor());
 
         double angle = tickTillPrize * 6.0;
-        //double r = tickTillPrize / 60.0;
 
         double x = Math.cos(angle);
         double z = Math.sin(angle);
-        double y = tickTillPrize / 15.0;
+        double y;
+
+        try {
+            y = Double.parseDouble(PAAnimation.split(":")[1]);
+        } catch (Exception e) {
+            y = 0;
+        }
 
         Location location = loc.clone().add(.5, 0, .5).add(x, y, z);
 
         spawnParticles(particle, color, location);
 
     }
-    private static void spiralClockwise(Particle particle, Color color, Location loc, int tickTillPrize) {
+    private static void helix(ParticleAnimation PA ,Location loc, int tickTillPrize) {
+
+        String Properties = PA.getAnimation().split(":").length < 2 ? "" : PA.getAnimation().toLowerCase().split(":")[1];
+        Particle particle = Particle.valueOf(PA.getParticle());
+        Color color = Color.fromRGB(PA.getColor());
+        double angle = tickTillPrize * 6.0;
+        double amplitude = Properties.contains("amplitude=") ? Double.parseDouble(Properties.split("amplitude=")[1]) : 1;
+        double y = !Properties.contains("down") ? tickTillPrize / 15.0 : 4 - (tickTillPrize / 15.0);
+
+        if (Properties.contains("diverge")) amplitude = (tickTillPrize / 60.0) * amplitude;
+
+        double x, z;
+        if (!Properties.contains("left")) {
+            x = amplitude *  Math.sin(angle);
+            z = amplitude *  Math.cos(angle);
+        } else {
+            z = amplitude *  Math.sin(angle);
+            x = amplitude *  Math.cos(angle);
+        }
+
+        Location location = loc.clone().add(.5, 0, .5).add(x, y, z);
+
+        spawnParticles(particle, color, location);
+    }
+    private static void spiral(ParticleAnimation PA, Location loc, int tickTillPrize) {
+
+        Particle particle = Particle.valueOf(PA.getParticle());
+        Color color = Color.fromRGB(PA.getColor());
+        boolean clockwise = PA.getAnimation().contains("clockwise");
 
         Location particleLocation = loc.clone().add(.5, 3, .5);
-        spawnParticles(particle, color, spiralLocations(particleLocation, true).get(tickTillPrize));
+
+        spawnParticles(particle, color, spiralLocations(particleLocation, clockwise).get(tickTillPrize));
 
     }
-    private static void spiralCounterClockwise(Particle particle, Color color, Location loc, int tickTillPrize) {
+    private static void lineUp(ParticleAnimation PA, Location loc, int tickTillPrize) {
 
-        Location particleLocation = loc.clone().add(.5, 3, .5);
-        spawnParticles(particle, color, spiralLocations(particleLocation, false).get(tickTillPrize));
-
-    }
-
-    private static void lineUp(Particle particle, Color color, Location loc, int tickTillPrize) {
+        Particle particle = Particle.valueOf(PA.getParticle());
+        Color color = Color.fromRGB(PA.getColor());
 
         Location particleLocation = loc.clone().add(.5, 3 - 3/(tickTillPrize * 1.0), .5);
         spawnParticles(particle, color, particleLocation);
