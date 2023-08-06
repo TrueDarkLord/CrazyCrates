@@ -86,6 +86,9 @@ public class CrazyManager {
     // Schematic locations for 1.13+.
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
 
+    public CrazyManager() {
+    }
+
     // Loads all the information the plugin needs to run.
     public void loadCrates() {
         giveNewPlayersKeys = false;
@@ -179,6 +182,15 @@ public class CrazyManager {
                             altPrize));
                 }
 
+                ArrayList<ParticleAnimation> particles = new ArrayList<>();
+
+                if (file.contains("Crate.Particles") && file.getConfigurationSection("Crate.Particles") != null) {
+                    for (String identifier : file.getConfigurationSection("Crate.Particles").getKeys(false)) {
+                        String path = "Crate.Particles." + identifier;
+                        particles.add(new ParticleAnimation(identifier, file.getString(path + ".Animation"), file.getString(path + ".Particle"), file.getInt(path + ".Color")));
+                    }
+                }
+
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
 
                 if (!giveNewPlayersKeys) {
@@ -188,7 +200,7 @@ public class CrazyManager {
                 List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, particles, maxMassOpen, requiredKeys, prizeMessage, holo));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
@@ -196,7 +208,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null,  0, 0, Collections.emptyList(), null));
 
         if (fileManager.isLogging()) {
             plugin.getLogger().info("All crate information has been loaded.");
@@ -395,6 +407,22 @@ public class CrazyManager {
                     } else {
                         CrateControlListener.inUse.put(player, location);
                         QuickCrate.openCrate(player, location, crate, keyType, hologramController);
+                    }
+                }
+            }
+            case PARTICLES -> {
+                if (CrateControlListener.inUse.containsValue(location)) {
+                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                    removePlayerFromOpeningList(player);
+                    return;
+                } else {
+                    if (virtualCrate) {
+                        player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                        removePlayerFromOpeningList(player);
+                        return;
+                    } else {
+                        CrateControlListener.inUse.put(player, location);
+                        Particles.openCrate(player, location, crate, keyType, hologramController);
                     }
                 }
             }
