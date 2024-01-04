@@ -17,16 +17,16 @@ repositories {
 dependencies {
     api(project(":core"))
 
-    implementation("de.tr7zw", "item-nbt-api", "2.11.3")
+    implementation("de.tr7zw", "item-nbt-api", "2.12.2")
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
     compileOnly(fileTree("libs").include("*.jar"))
 
-    compileOnly("me.clip", "placeholderapi", "2.11.3")
+    compileOnly("me.clip", "placeholderapi", "2.11.4")
 
-    compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.3")
+    compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.4")
 
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
 }
