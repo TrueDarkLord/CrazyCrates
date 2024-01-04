@@ -56,7 +56,7 @@ tasks {
             "dev.triumphteam",
             "org.jetbrains",
             "org.bstats",
-            "de.tr7zw"
+            "de.tr7zw.changeme.nbtapi"
         ).forEach {
             relocate(it, "libs.$it")
         }
