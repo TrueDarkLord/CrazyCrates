@@ -33,6 +33,10 @@ public enum CrateType {
      */
     fire_cracker("FireCracker"),
     /**
+     * Particles, A simple variant of QuickCrate that adds custom particle animations.
+     */
+    particles("Particles"),
+    /**
      * A crate that spawns a schematic in the physical world with 4 chests that spawn on each corner.
      */
     quad_crate("QuadCrate"),
