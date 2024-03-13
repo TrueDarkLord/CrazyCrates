@@ -519,7 +519,26 @@ public class CrateManager {
 
                 crateBuilder = new FireCrackerCrate(crate, player, 45, location);
             }
+            case particles -> {
+                if (this.cratesInUse.containsValue(location)) {
+                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
+                    removePlayerFromOpeningList(player);
+                    return;
+                }
 
+                if (virtualCrate) {
+                    Map<String, String> placeholders = new HashMap<>();
+
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
+
+                    player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+                    removePlayerFromOpeningList(player);
+                    return;
+                }
+
+                crateBuilder = new Particles(crate, player, 45, location);
+            }
             case crate_on_the_go -> {
                 if (virtualCrate) {
                     final Map<String, String> placeholders = new HashMap<>();
