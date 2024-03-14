@@ -5,6 +5,7 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.api.objects.ParticleAnimation;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -188,6 +189,7 @@ public class CrateManager {
 
                 List<Prize> prizes = new ArrayList<>();
                 List<Tier> tiers = new ArrayList<>();
+                ArrayList<ParticleAnimation> particles = new ArrayList<>();
 
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
@@ -251,6 +253,17 @@ public class CrateManager {
                     }
                 }
 
+                ConfigurationSection particleSection = file.getConfigurationSection("Crate.Particles");
+
+                if (particleSection != null) {
+                    if (file.contains("Crate.Particles") && file.getConfigurationSection("Crate.Particles") != null) {
+                        for (String identifier : file.getConfigurationSection("Crate.Particles").getKeys(false)) {
+                            String path = "Crate.Particles." + identifier;
+                            particles.add(new ParticleAnimation(identifier, file.getString(path + ".Animation"), file.getString(path + ".Particle"), file.getInt(path + ".Color")));
+                        }
+                    }
+                }
+
                 int newPlayersKeys = file.getInt("Crate.StartingKeys", 0);
 
                 if (!this.giveNewPlayersKeys) {
@@ -260,7 +273,7 @@ public class CrateManager {
                 List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getInt("Crate.Hologram.Range", 8), file.getStringList("Crate.Hologram.Message"));
-                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
+                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, particles, maxMassOpen, requiredKeys, prizeMessage, holo));
 
                 Permission doesExist = this.plugin.getServer().getPluginManager().getPermission("crazycrates.open." + crateName);
 
