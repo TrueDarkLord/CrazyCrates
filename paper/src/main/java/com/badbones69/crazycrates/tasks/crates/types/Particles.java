@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.ParticleAnimation;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Color;
@@ -13,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,17 +54,12 @@ public class Particles extends CrateBuilder {
             this.crateManager.getHolograms().removeHologram(getLocation().getBlock());
         }
 
-        List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
-
         addCrateTask(new BukkitRunnable() {
             int tickTillPrize = 0;
-            final int random = ThreadLocalRandom.current().nextInt(colors.size());
-            final Location location = getLocation().clone().add(.5, 25, .5);
-
-            int length = 0;
 
             @Override
             public void run() {
+
                 for (ParticleAnimation PA : crate.getParticleAnimations()) {
 
                     String animation = PA.getAnimation().toLowerCase().contains(":") ? PA.getAnimation().toLowerCase().split(":")[0] : PA.getAnimation().toLowerCase();
@@ -82,9 +80,7 @@ public class Particles extends CrateBuilder {
 
                 if (++tickTillPrize >= 60) {
                     crateManager.endCrate(getPlayer());
-
                     QuickCrate quickCrate = new QuickCrate(getCrate(), getPlayer(), getLocation());
-
                     quickCrate.open(KeyType.free_key, false);
                 }
             }
