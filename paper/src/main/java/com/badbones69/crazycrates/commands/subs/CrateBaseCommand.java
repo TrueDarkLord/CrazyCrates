@@ -405,7 +405,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
+        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.particles || crate.getCrateType() == CrateType.quad_crate) {
             Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{cratetype}", crate.getCrateType().getName());
@@ -534,7 +534,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
+        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.particles || crate.getCrateType() == CrateType.quad_crate) {
             Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{cratetype}", crate.getCrateType().getName());
@@ -615,7 +615,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
+        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.particles || crate.getCrateType() == CrateType.quad_crate) {
             Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{cratetype}", crate.getCrateType().getName());
