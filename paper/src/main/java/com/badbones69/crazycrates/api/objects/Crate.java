@@ -826,6 +826,11 @@ public class Crate {
     }
 
     /**
+     * @return Returns all particles that will be spawned on crate open.
+     */
+    public ArrayList<ParticleAnimation> getParticleAnimations() { return particleAnimations; }
+
+    /**
      * @return the amount of required keys.
      */
     public final int getRequiredKeys() {
