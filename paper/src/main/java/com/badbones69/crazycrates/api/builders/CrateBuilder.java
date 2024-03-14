@@ -240,6 +240,14 @@ public abstract class CrateBuilder extends FoliaRunnable {
     public final boolean isFireCracker() {
         return this.crate.getCrateType() == CrateType.fire_cracker;
     }
+    /**
+     * If the crate type is particle cracker, we won't run the open crate event again.
+     *
+     * @return true or false.
+     */
+    public boolean isParticleCrate() {
+        return this.crate.getCrateType() == CrateType.particles;
+    }
 
     /**
      * If the crate type is cosmic crate, we won't run the event again.
