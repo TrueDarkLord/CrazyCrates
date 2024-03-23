@@ -275,7 +275,7 @@ public class CrateManager {
                 List<String> prizeCommands = file.contains("Crate.Prize-Commands") ? file.getStringList("Crate.Prize-Commands") : Collections.emptyList();
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getInt("Crate.Hologram.Range", 8), file.getStringList("Crate.Hologram.Message"));
-                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, particles, maxMassOpen, requiredKeys, prizeMessage, holo));
+                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, particles, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
                 Permission doesExist = this.plugin.getServer().getPluginManager().getPermission("crazycrates.open." + crateName);
 
@@ -294,7 +294,7 @@ public class CrateManager {
             }
         }
 
-        addCrate(new Crate("Menu", "Menu", CrateType.menu, null, "", new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), Collections.emptyList(), null));
+        addCrate(new Crate("Menu", "Menu", CrateType.menu, null, "", new ArrayList<>(), null, 0, null, new ArrayList<>(), 0, 0, Collections.emptyList(), Collections.emptyList(), null));
 
         if (MiscUtils.isLogging()) {
             List.of(

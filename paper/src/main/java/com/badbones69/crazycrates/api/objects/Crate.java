@@ -89,7 +89,8 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, ArrayList<ParticleAnimation> particles, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, ArrayList<ParticleAnimation> particles, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
+        this.keyNoNBT = ItemBuilder.convertItemStack(key).build();
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
         this.keyName = keyName;
 

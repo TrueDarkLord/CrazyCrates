@@ -60,7 +60,7 @@ public class Particles extends CrateBuilder {
             @Override
             public void run() {
 
-                for (ParticleAnimation PA : crate.getParticleAnimations()) {
+                for (ParticleAnimation PA : getCrate().getParticleAnimations()) {
 
                     String animation = PA.getAnimation().toLowerCase().contains(":") ? PA.getAnimation().toLowerCase().split(":")[0] : PA.getAnimation().toLowerCase();
 
