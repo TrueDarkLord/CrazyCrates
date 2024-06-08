@@ -4,23 +4,18 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ParticleAnimation;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Particles extends CrateBuilder {
 
@@ -36,13 +31,16 @@ public class Particles extends CrateBuilder {
 
     @Override
     public void open(KeyType type, boolean checkHand) {
+
+        final Player player = getPlayer();
+
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
         this.crateManager.addCrateInUse(getPlayer(), getLocation());
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(player.getUniqueId(), getCrate().getName(), type, 1, checkHand);
 
         if (!keyCheck) {
             MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
@@ -51,10 +49,10 @@ public class Particles extends CrateBuilder {
         }
 
         if (this.crateManager.getHolograms() != null) {
-            this.crateManager.getHolograms().removeHologram(getLocation().getBlock());
+            this.crateManager.getHolograms().removeHologram(getLocation());
         }
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int tickTillPrize = 0;
 
             @Override
@@ -84,11 +82,11 @@ public class Particles extends CrateBuilder {
                     quickCrate.open(KeyType.free_key, false);
                 }
             }
-        }.runTaskTimer(this.plugin, 0, 1));
+        }.runAtFixedRate(this.plugin, 0, 1));
     }
 
     private static void spawnParticles(Particle particle, Color color, Location location) {
-        if (particle == Particle.REDSTONE) {
+        if (particle == Particle.DUST) {
             location.getWorld().spawnParticle(particle, location, 0, new Particle.DustOptions(color, 1));
         } else {
             location.getWorld().spawnParticle(particle, location, 0);
